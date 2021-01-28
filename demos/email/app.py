@@ -24,16 +24,6 @@ app.config.from_object(config[config_name])
 app.jinja_env.trim_blocks = True
 app.jinja_env.lstrip_blocks = True
 
-'''app.config.update(
-    SECRET_KEY=os.getenv('SECRET_KEY', 'secret string'),
-    MAIL_SERVER=os.getenv('MAIL_SERVER'),
-    MAIL_PORT=465,
-    MAIL_USE_SSL=True,
-    MAIL_USERNAME=os.getenv('MAIL_USERNAME'),
-    MAIL_PASSWORD=os.getenv('MAIL_PASSWORD'),
-    MAIL_DEFAULT_SENDER=('Grey Li', os.getenv('MAIL_USERNAME'))
-)
-'''
 app.config.update(
     SECRET_KEY=app.config['SECRET_KEY'],
     MAIL_SERVER=app.config['MAIL_SERVER'],
@@ -55,7 +45,8 @@ def send_smtp_mail(subject, to, body):
 
 # send over SendGrid Web API
 def send_api_mail(subject, to, body):
-    sg = sendgrid.SendGridAPIClient(os.getenv('SENDGRID_API_KEY'))
+    #apikey=app.config['SENDGRID_API_KEY']
+    sg = sendgrid.SendGridAPIClient(apikey=os.environ.get('SENDGRID_API_KEY'))
     from_email = SGEmail('Grey Li <noreply@helloflask.com>')
     to_email = SGEmail(to)
     content = Content("text/plain", body)
