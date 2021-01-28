@@ -44,7 +44,7 @@ def hi():
 # use int URL converter
 @app.route('/goback/<int:year>')
 def go_back(year):
-    return 'Welcome to %d!' % (2018 - year)
+    return 'Welcome to %d!' % (2021 - year)
 
 
 # use any URL converter
@@ -75,11 +75,11 @@ def note(content_type):
     content_type = content_type.lower()
     if content_type == 'text':
         body = '''Note
-to: Peter
-from: Jane
-heading: Reminder
-body: Don't forget the party!
-'''
+                to: Peter
+                from: Jane
+                heading: Reminder
+                body: Don't forget the party!
+                '''
         response = make_response(body)
         response.mimetype = 'text/plain'
     elif content_type == 'html':
@@ -202,6 +202,7 @@ def bar():
 def do_something():
     # do something here
     return redirect_back()
+    # return redirect(url_for('hello'))
 
 
 def is_safe_url(target):

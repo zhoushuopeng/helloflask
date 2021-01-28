@@ -7,6 +7,7 @@
 """
 import os
 from threading import Thread
+from settings import config
 
 import sendgrid
 from sendgrid.helpers.mail import Email as SGEmail, Content, Mail as SGMail
@@ -17,10 +18,13 @@ from wtforms.validators import DataRequired, Email
 from flask import Flask, flash, redirect, url_for, render_template, request
 
 app = Flask(__name__)
+config_name=os.getenv('FLASK_CONFIG', 'development')
+app.config.from_object(config[config_name])
+
 app.jinja_env.trim_blocks = True
 app.jinja_env.lstrip_blocks = True
 
-app.config.update(
+'''app.config.update(
     SECRET_KEY=os.getenv('SECRET_KEY', 'secret string'),
     MAIL_SERVER=os.getenv('MAIL_SERVER'),
     MAIL_PORT=465,
@@ -28,6 +32,16 @@ app.config.update(
     MAIL_USERNAME=os.getenv('MAIL_USERNAME'),
     MAIL_PASSWORD=os.getenv('MAIL_PASSWORD'),
     MAIL_DEFAULT_SENDER=('Grey Li', os.getenv('MAIL_USERNAME'))
+)
+'''
+app.config.update(
+    SECRET_KEY=app.config['SECRET_KEY'],
+    MAIL_SERVER=app.config['MAIL_SERVER'],
+    MAIL_PORT=465,
+    MAIL_USE_SSL=True,
+    MAIL_USERNAME=app.config['MAIL_USERNAME'],
+    MAIL_PASSWORD=app.config['MAIL_PASSWORD'],
+    MAIL_DEFAULT_SENDER=app.config['MAIL_DEFAULT_SENDER']
 )
 
 mail = Mail(app)
